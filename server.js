@@ -1,10 +1,24 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const bcrypt = require("bcrypt-nodejs");
-
+const knex = require("knex");
 const app = express();
 
 app.use(bodyParser.json());
+
+const db = knex({
+  client: "pg",
+  connection: {
+    host: "127.0.0.1",
+    user: "postgres",
+    password: "Kr5n@78cai",
+    database: "smart_brain",
+  },
+});
+
+// Insert users when they register.
+
+//
 
 const database = {
   users: [
@@ -25,13 +39,6 @@ const database = {
       joined: new Date(),
     },
   ],
-  login: [
-    {
-      id: "987",
-      hash: "",
-      email: "john@gmail.com",
-    },
-  ],
 };
 
 app.get("/", (req, res) => {
@@ -47,7 +54,7 @@ app.post("/signin", (req, res) => {
     req.body.email === database.users[0].email &&
     req.body.password === database.users[0].password
   ) {
-    res.json("success");
+    res.json(database.users[0]);
   } else {
     res.status(400).json("error logging in");
   }
@@ -55,16 +62,12 @@ app.post("/signin", (req, res) => {
 
 app.post("/register", (req, res) => {
   const { email, password, name } = req.body;
-
-  database.users.push({
-    id: "125",
-    name: name,
-    email: email,
-    password: password,
-    entries: 0,
-    joined: new Date(),
-  });
-  res.json(database.users[database.users.length - 1]);
+  db("users")
+    .insert({ email: email, name: name, joined: new Date() })
+    .then((user) => {
+      res.json(user[0]);
+    })
+    .catch((err) => res.status(400).json("User already exists"));
 });
 
 app.get("/profile/:id", (req, res) => {
