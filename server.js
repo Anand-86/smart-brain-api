@@ -101,24 +101,3 @@ app.put("/image", (req, res) => {
     })
     .catch((err) => res.status(400).json("Error getting entries"));
 });
-
-// bcrypt.hash(password, null, null, function (err, hash) {
-//   console.log(hash);
-// });
-
-// // Load hash from your password DB.
-// bcrypt.compare("bacon", hash, function (err, res) {
-//   // res == true
-// });
-// bcrypt.compare("veggies", hash, function (err, res) {
-//   // res = false
-// });
-
-/*
-root route --> this is working
-/signin --> POST success/fail ...because we posting data or user info we will need to use
-/register --> POST user ...because we want to store the data for future singins etc
-/profile/:userId --> GET = user
-/image --> PUT --> user 
-
-*/
