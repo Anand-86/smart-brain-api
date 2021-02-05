@@ -14,10 +14,8 @@ app.use(bodyParser.json());
 const db = knex({
   client: "pg",
   connection: {
-    host: "postgresql-defined-76375",
-    user: "postgres",
-    password: "Kr5n@78cai",
-    database: "smart_brain",
+    connectionString: process.env.DATABASE_URL,
+    ssl: true,
   },
 });
 
